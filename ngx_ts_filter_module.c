@@ -210,8 +210,8 @@ ngx_ts_header_filter(ngx_http_request_t *r) {
     ngx_str_t url;
     ngx_str_t *location;
 
-    ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-            "#######START#######http ts header filter module ");
+    ngx_log_debug(NGX_LOG_DEBUG, r->connection->log, 0,
+            "#######START#######http ts header filter module");
 
     lcf = ngx_http_get_module_loc_conf(r, ngx_ts_filter_module);
 
@@ -222,7 +222,7 @@ ngx_ts_header_filter(ngx_http_request_t *r) {
             ||  r->headers_out.content_length_n <= 0
             || lcf == NULL
             || !lcf->ts_filter) {
-        ngx_log_error(NGX_LOG_ERR, r->connection->log, 0, "url: %V, internal: %d",
+        ngx_log_debug2(NGX_LOG_DEBUG_HTTP, r->connection->log, 0, "url: %V, internal: %d",
                 &r->uri, r->main->internal);
         return ngx_http_next_header_filter(r);
     }
@@ -277,7 +277,7 @@ ngx_ts_header_filter(ngx_http_request_t *r) {
         r->headers_out.location->value.data = location->data; 
         return NGX_HTTP_MOVED_TEMPORARILY;         
     }
-    ngx_log_error(NGX_LOG_ERR, r->connection->log, 0, "####nginx http ts header filter module, do not process, return to next filter: %V ", &r->uri);
+    ngx_log_debug1(NGX_LOG_DEBUG, r->connection->log, 0, "####nginx http ts header filter module, do not process, return to next filter: %V ", &r->uri);
     return ngx_http_next_header_filter(r);
 }
 
